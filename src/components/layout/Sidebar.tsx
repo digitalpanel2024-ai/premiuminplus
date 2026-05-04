@@ -22,6 +22,22 @@ type SaleItem = {
 const products = ['Capcut 7 Day', 'Capcut 30 Day', 'Netflix', 'ChatGPT 1 Bulan', 'YouTube Premium'];
 const channels: SaleItem['channel'][] = ['WA', 'Telegram'];
 
+function getItemTone(label: string) {
+  const value = label.toLowerCase();
+  if (value.includes('dasbor')) return 'from-brand/20 to-brand/5 text-brand';
+  if (value.includes('komunitas')) return 'from-emerald-500/20 to-emerald-500/5 text-emerald-300';
+  if (value.includes('order')) return 'from-sky-500/20 to-sky-500/5 text-sky-300';
+  if (value.includes('deposit')) return 'from-cyan-500/20 to-cyan-500/5 text-cyan-300';
+  if (value.includes('tarik')) return 'from-amber-500/20 to-amber-500/5 text-amber-300';
+  if (value.includes('riwayat')) return 'from-violet-500/20 to-violet-500/5 text-violet-300';
+  if (value.includes('mutasi')) return 'from-pink-500/20 to-pink-500/5 text-pink-300';
+  if (value.includes('profil')) return 'from-fuchsia-500/20 to-fuchsia-500/5 text-fuchsia-300';
+  if (value.includes('kendala')) return 'from-rose-500/20 to-rose-500/5 text-rose-300';
+  if (value.includes('bot')) return 'from-emerald-500/20 to-cyan-500/5 text-cyan-300';
+  if (value.includes('dokumen')) return 'from-slate-500/20 to-slate-500/5 text-slate-200';
+  return 'from-white/15 to-white/5 text-white';
+}
+
 function makePhone() {
   const partA = 100 + Math.floor(Math.random() * 900);
   const partB = 10 + Math.floor(Math.random() * 90);
@@ -73,21 +89,21 @@ export function Sidebar({ open, sections, onClose }: SidebarProps) {
       {open && <button aria-label="Close sidebar" className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={onClose} />}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-[280px] border-r border-white/10 bg-[#0d0912]/95 backdrop-blur-xl transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-[264px] border-r border-white/10 bg-[#0d0912]/95 backdrop-blur-xl transition-transform duration-300 lg:translate-x-0 ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between border-b border-white/10 px-5 py-5">
+          <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
             <div className="flex items-center gap-3">
               <img
                 src={logoTransparent}
                 alt="Premiumin Plus"
-                className="h-12 w-12 rounded-2xl border border-white/10 bg-white/5 object-contain p-1"
+                className="h-11 w-11 rounded-2xl border border-white/10 bg-white/5 object-contain p-1"
               />
               <div>
-                <p className="text-sm font-extrabold tracking-wide">Premiumin Plus</p>
-                <p className="text-[11px] uppercase tracking-[0.18em] text-white/40">Dashboard UI</p>
+                <p className="text-sm font-extrabold tracking-wide text-white">Premiumin Plus</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">Compact panel</p>
               </div>
             </div>
             <button onClick={onClose} className="rounded-xl p-2 text-white/50 hover:bg-white/5 lg:hidden" aria-label="Close">
@@ -95,13 +111,14 @@ export function Sidebar({ open, sections, onClose }: SidebarProps) {
             </button>
           </div>
 
-          <div className="scrollbar-hidden flex-1 overflow-y-auto px-3 py-4">
+          <div className="scrollbar-hidden flex-1 overflow-y-auto px-2 py-3 pb-6">
             {sections.map((section) => (
-              <div key={section.label} className="mb-5">
-                <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/35">{section.label}</p>
-                <div className="space-y-1">
+              <div key={section.label} className="mb-3 last:mb-0">
+                <p className="px-3 pb-2 text-[9px] font-bold uppercase tracking-[0.24em] text-white/30">{section.label}</p>
+                <div className="space-y-1.5">
                   {section.items.map((item) => {
                     const Icon = item.icon;
+                    const tone = getItemTone(item.label);
                     return (
                       <NavLink
                         key={item.to}
@@ -110,14 +127,16 @@ export function Sidebar({ open, sections, onClose }: SidebarProps) {
                         onClick={onClose}
                         className={({ isActive }) =>
                           [
-                            'flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold transition-all duration-200 hover:translate-x-1',
+                            'group flex items-center gap-3 rounded-2xl px-3 py-2.5 text-[13px] font-semibold transition-all duration-200 hover:translate-x-0.5',
                             isActive
-                              ? 'bg-brand text-white shadow-lg shadow-brand/20'
+                              ? 'bg-[linear-gradient(145deg,rgba(255,0,127,0.18),rgba(255,255,255,0.04))] text-white shadow-lg shadow-brand/20 ring-1 ring-brand/20'
                               : 'text-white/70 hover:bg-white/5 hover:text-white',
                           ].join(' ')
                         }
                       >
-                        <Icon className="h-4 w-4 shrink-0" />
+                        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ring-1 ring-white/10 ${tone}`}>
+                          <Icon className="h-4 w-4 shrink-0" />
+                        </span>
                         <span className="leading-tight">{item.label}</span>
                       </NavLink>
                     );
@@ -127,7 +146,7 @@ export function Sidebar({ open, sections, onClose }: SidebarProps) {
             ))}
           </div>
 
-          <div className="relative border-t border-white/10 p-4">
+          <div className="relative border-t border-white/10 p-3">
             <AnimatePresence>
               {showSale ? (
                 <motion.div
@@ -135,7 +154,7 @@ export function Sidebar({ open, sections, onClose }: SidebarProps) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 12, scale: 0.98 }}
                   transition={{ duration: 0.25 }}
-                  className="pointer-events-none absolute bottom-[92px] left-4 right-4 z-10 rounded-[1.2rem] border border-white/10 bg-[#0b1018]/95 p-3 shadow-[0_18px_40px_rgba(0,0,0,0.3)]"
+                  className="pointer-events-none absolute bottom-[84px] left-3 right-3 z-10 rounded-[1.2rem] border border-white/10 bg-[#0b1018]/95 p-3 shadow-[0_18px_40px_rgba(0,0,0,0.3)]"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2 text-emerald-300">
@@ -168,18 +187,18 @@ export function Sidebar({ open, sections, onClose }: SidebarProps) {
                   </div>
                   <div className="mt-2 flex items-center gap-2 text-[11px] text-white/40">
                     <CalendarClock className="h-3.5 w-3.5 text-emerald-300" />
-                    <span>Muncul 3 detik, ulang tiap 20 - 30 detik.</span>
+                    <span>aktivitas order terbaru sedang berjalan.</span>
                   </div>
                 </motion.div>
               ) : null}
             </AnimatePresence>
 
-            <div className="rounded-3xl border border-brand/20 bg-[linear-gradient(145deg,rgba(255,0,127,0.10),rgba(255,255,255,0.03))] p-4">
+            <div className="rounded-3xl border border-brand/20 bg-[linear-gradient(145deg,rgba(255,0,127,0.10),rgba(255,255,255,0.03))] p-3.5">
               <div className="flex items-center gap-2 text-brand">
                 <ShoppingBag className="h-4 w-4" />
-                <p className="text-xs font-semibold text-white/70">Menu Aktif</p>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65">Menu Aktif</p>
               </div>
-              <p className="mt-2 text-sm text-white/75">Sidebar dibuat lebih lega agar menu tidak tertutup notifikasi.</p>
+              <p className="mt-2 text-xs leading-5 text-white/70">Panel ini dibuat compact di desktop, tetap nyaman di mobile, dan menjaga fokus pada menu yang penting.</p>
             </div>
           </div>
         </div>

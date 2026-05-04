@@ -10,10 +10,7 @@ import {
   Code2,
   ArrowRight,
   AlertTriangle,
-  Crown,
-  FileText,
   HelpCircle,
-  History,
   Layers3,
   MessageCircle,
   Minus,
@@ -33,6 +30,16 @@ import { AppShell, type NavSection } from '../components/layout/AppShell';
 import { ApiKeyCard } from '../components/ApiKeyCard';
 import { formatCurrency, formatNumber, getGreeting } from '../utils/format';
 import cardArt from '../asset/logo-upscale.png';
+import BotWA from './botwa';
+import DaftarHarga from './daftarharga';
+import Dokumen from './dokumen';
+import LaporanKendala from './laporankendala';
+import MutasiSaldo from './mutasisaldo';
+import Order from './order';
+import Profil from './profil';
+import RiwayatDeposit from './riwayatdeposit';
+import RiwayatPesanan from './riwayatpesanan';
+import TarikSaldo from './tariksaldo';
 
 // Dashboard utama dibangun sebagai panel premium dengan hero, kartu saldo, statistik, dan menu halaman turunan.
 interface DashboardPageProps {
@@ -69,7 +76,7 @@ const sections: NavSection[] = [
       { label: 'Profil', to: '/dashboard/profil', icon: Users },
       { label: 'Laporan Kendala', to: '/dashboard/laporan-kendala', icon: ShieldCheck },
       { label: 'Bot WA & Telegram', to: '/dashboard/bot-wa-telegram', icon: Bot },
-      { label: 'Document', to: '/dashboard/document', icon: BookText },
+      { label: 'Dokumen', to: '/dashboard/dokumen', icon: BookText },
     ],
   },
 ];
@@ -171,6 +178,7 @@ const pageTitles: Record<string, string> = {
   '/dashboard/profil': 'Profil',
   '/dashboard/laporan-kendala': 'Laporan Kendala',
   '/dashboard/bot-wa-telegram': 'Bot WA & Telegram',
+  '/dashboard/dokumen': 'Dokumen',
   '/dashboard/document': 'Document',
 };
 
@@ -210,11 +218,11 @@ function SectionShell({
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.28 }}
-      className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5 shadow-[0_0_30px_rgba(255,0,127,0.05)]"
+      className="rounded-[1.35rem] border border-white/10 bg-white/5 p-4 shadow-[0_0_24px_rgba(255,0,127,0.05)] lg:p-5"
     >
       <div className="mb-4">
-        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/35">{subtitle}</p>
-        <h2 className="mt-2 text-2xl font-extrabold tracking-tight">{title}</h2>
+        <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-white/35">{subtitle}</p>
+        <h2 className="mt-2 text-xl font-extrabold tracking-tight text-white lg:text-[1.7rem]">{title}</h2>
       </div>
       {children}
     </motion.section>
@@ -255,6 +263,66 @@ function LinkCard({
         </div>
       </div>
       <div className="mt-4 text-sm font-semibold text-brand">Buka link</div>
+    </motion.a>
+  );
+}
+
+function ChannelCard({
+  title,
+  tagline,
+  description,
+  href,
+  icon: Icon,
+  tone,
+  bullets,
+}: {
+  title: string;
+  tagline: string;
+  description: string;
+  href: string;
+  icon: typeof MessageCircle;
+  tone: string;
+  bullets: string[];
+}) {
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2 }}
+      className={`overflow-hidden rounded-[1.25rem] border border-white/10 bg-[#0f0b15] ${tone}`}
+    >
+      <div className="p-4 lg:p-5">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-white ring-1 ring-white/10">
+              <Icon className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-white/45">{tagline}</p>
+              <h3 className="mt-1 text-[15px] font-extrabold text-white lg:text-lg">{title}</h3>
+          </div>
+          </div>
+          <span className="rounded-full border border-white/10 bg-white/10 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.2em] text-white/80">
+            Live
+          </span>
+        </div>
+
+        <p className="mt-4 max-w-md text-sm leading-6 text-white/75">{description}</p>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {bullets.map((bullet) => (
+            <span key={bullet} className="rounded-full border border-white/10 bg-black/10 px-3 py-1.5 text-[11px] text-white/80">
+              {bullet}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="flex items-center justify-between border-t border-white/10 px-4 py-3 text-sm font-semibold text-white lg:px-5">
+        <span className="text-white/70">{title}</span>
+        <span className="text-white">Buka channel</span>
+      </div>
     </motion.a>
   );
 }
@@ -596,148 +664,60 @@ export function DashboardPage({ session, onLogout }: DashboardPageProps) {
 
   const sectionContent: Record<string, ReactNode> = {
     '/dashboard/komunitas-wa': (
-      <MenuPage title="Komunitas" subtitle="Menu komunitas resellers">
+      <MenuPage title="Komunitas WA" subtitle="Ruang update reseller dan channel cepat">
+        <div className="mb-4 grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-[1.35rem] border border-white/10 bg-[linear-gradient(145deg,rgba(16,185,129,0.14),rgba(2,132,199,0.12))] p-4 lg:p-5">
+            <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-white/45">Slogan Komunitas</p>
+            <h3 className="mt-2 text-[1.35rem] font-extrabold text-white lg:text-2xl">Tumbuh cepat, balas lebih cepat.</h3>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-white/75">
+              Komunitas ini dibuat untuk update stok, diskusi reseller, dan jalur pengumuman yang rapi. Satu kaki di WhatsApp, satu kaki di Telegram.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            <div className="rounded-[1.35rem] border border-white/10 bg-[#0f0b15] p-4">
+              <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-emerald-300">WhatsApp</p>
+              <p className="mt-2 text-sm text-white/65">Fast response, diskusi hangat, dan support harian.</p>
+            </div>
+            <div className="rounded-[1.35rem] border border-white/10 bg-[#0f0b15] p-4">
+              <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-sky-300">Telegram</p>
+              <p className="mt-2 text-sm text-white/65">Broadcast rapi, update lebih dingin, dan arsip mudah dicari.</p>
+            </div>
+          </div>
+        </div>
         <div className="grid gap-4 md:grid-cols-2">
-          <LinkCard
+          <ChannelCard
             title="Grup Reseller WhatsApp"
-            description="Gabung komunitas reseller untuk update dan diskusi cepat."
+            tagline="Hijau / cepat / responsif"
+            description="Tempat ngobrol reseller, tanya stok, dan dapat kabar terbaru tanpa menunggu lama."
             href="https://chat.whatsapp.com/Igg1KjY54I3A2ERIgofm4b"
             icon={MessageCircle}
-            tone=""
+            tone="bg-[linear-gradient(145deg,rgba(34,197,94,0.20),rgba(15,11,21,0.98))]"
+            bullets={['Update stok', 'Support cepat', 'Komunitas aktif']}
           />
-          <LinkCard
-            title="Grup Telegram"
-            description="Channel alternatif untuk update dan pengumuman."
+          <ChannelCard
+            title="Channel Telegram"
+            tagline="Biru / rapi / informatif"
+            description="Channel pengumuman yang lebih tenang untuk notifikasi, arsip, dan update sistem."
             href="https://t.me/+1tkWNfTUfEg1MTY1"
             icon={Send}
-            tone=""
+            tone="bg-[linear-gradient(145deg,rgba(14,165,233,0.20),rgba(15,11,21,0.98))]"
+            bullets={['Broadcast resmi', 'Arsip pengumuman', 'Informasi singkat']}
           />
         </div>
       </MenuPage>
     ),
-    '/dashboard/order-akun': <OrderCheckout />,
+    '/dashboard/order-akun': <Order />,
     '/dashboard/deposit-saldo': <DepositTopup />,
-    '/dashboard/daftar-harga': (
-      <MenuPage title="Daftar Harga" subtitle="List produk dan harga">
-        <ProductList items={products} cta={null} />
-      </MenuPage>
-    ),
-    '/dashboard/tarik-saldo': (
-      <MenuPage title="Tarik Saldo" subtitle="Riwayat dan opsi tarik saldo">
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-[1.2rem] border border-white/10 bg-[#0f0b15] p-4">
-            <p className="text-sm font-semibold text-white">Ringkasan Saldo</p>
-            <div className="mt-4 space-y-3 text-sm text-white/60">
-              <div className="flex items-center justify-between">
-                <span>Saldo tersedia</span>
-                <b className="text-white">{formatCurrency(61344)}</b>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Minimal tarik</span>
-                <b className="text-white">{formatCurrency(50000)}</b>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-[1.2rem] border border-white/10 bg-[#0f0b15] p-4">
-            <p className="text-sm font-semibold text-white">Checklist</p>
-            <ul className="mt-4 space-y-2 text-sm text-white/60">
-              <li>Pastikan rekening aktif.</li>
-              <li>Nama pemilik sesuai akun.</li>
-              <li>Verifikasi manual ringan.</li>
-            </ul>
-          </div>
-        </div>
-      </MenuPage>
-    ),
-    '/dashboard/riwayat-pesanan': (
-      <MenuPage title="Riwayat Pesanan" subtitle="History transaksi order">
-        <ListTimeline items={orderHistory} />
-      </MenuPage>
-    ),
-    '/dashboard/riwayat-deposit': (
-      <MenuPage title="Riwayat Deposit" subtitle="History deposit saldo">
-        <ListTimeline items={depositHistory} />
-      </MenuPage>
-    ),
-    '/dashboard/mutasi-saldo': (
-      <MenuPage title="Mutasi Saldo" subtitle="Pergerakan saldo terbaru">
-        <div className="space-y-3">
-          {mutationHistory.map((item) => (
-            <div key={item.title + item.time} className="flex items-center justify-between gap-4 rounded-[1.2rem] border border-white/10 bg-[#0f0b15] px-4 py-4">
-              <div>
-                <p className="text-sm font-semibold text-white">{item.title}</p>
-                <p className="mt-1 text-xs text-white/40">{item.time}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-bold text-white">{formatCurrency(item.amount)}</p>
-                <span className="mt-1 inline-flex rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white/70">
-                  {item.type}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </MenuPage>
-    ),
-    '/dashboard/profil': (
-      <MenuPage title="Profil" subtitle="Informasi akun pengguna">
-        <div className="grid gap-4 md:grid-cols-2">
-          {profileItems.map((item) => (
-            <div key={item.label} className="rounded-[1.2rem] border border-white/10 bg-[#0f0b15] p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-white/35">{item.label}</p>
-              <p className="mt-2 text-base font-bold text-white">{item.value}</p>
-            </div>
-          ))}
-        </div>
-      </MenuPage>
-    ),
-    '/dashboard/laporan-kendala': (
-      <MenuPage title="Laporan Kendala" subtitle="Form laporan masalah">
-        <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="rounded-[1.2rem] border border-white/10 bg-[#0f0b15] p-4">
-            <div className="grid gap-3">
-              <input className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none" placeholder="Judul kendala" />
-              <textarea className="min-h-32 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none" placeholder="Jelaskan kendala di sini" />
-              <button className="rounded-2xl bg-brand px-4 py-3 text-sm font-semibold text-white">Kirim Laporan</button>
-            </div>
-          </div>
-          <div className="rounded-[1.2rem] border border-white/10 bg-[#0f0b15] p-4">
-            <p className="text-sm font-semibold text-white">Topik cepat</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {supportTopics.map((topic) => (
-                <span key={topic} className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70">
-                  {topic}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </MenuPage>
-    ),
-    '/dashboard/bot-wa-telegram': (
-      <MenuPage title="Bot WA & Telegram" subtitle="Buat akun bot untuk notifikasi">
-        <div className="grid gap-4 md:grid-cols-2">
-          {botLinks.map((item) => (
-            <LinkCard key={item.title} title={item.title} description={item.description} href={item.href} icon={item.icon} tone="" />
-          ))}
-        </div>
-      </MenuPage>
-    ),
-    '/dashboard/document': (
-      <MenuPage title="Document" subtitle="Dokumentasi ringkas">
-        <div className="grid gap-4 md:grid-cols-3">
-          {docsList.map((item) => (
-            <div key={item.title} className="rounded-[1.2rem] border border-white/10 bg-[#0f0b15] p-4">
-              <div className="flex items-center gap-2 text-brand">
-                <FileText className="h-4 w-4" />
-                <p className="text-sm font-semibold text-white">{item.title}</p>
-              </div>
-              <p className="mt-3 text-sm text-white/45">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </MenuPage>
-    ),
+    '/dashboard/daftar-harga': <DaftarHarga />,
+    '/dashboard/tarik-saldo': <TarikSaldo />,
+    '/dashboard/riwayat-pesanan': <RiwayatPesanan />,
+    '/dashboard/riwayat-deposit': <RiwayatDeposit />,
+    '/dashboard/mutasi-saldo': <MutasiSaldo />,
+    '/dashboard/profil': <Profil />,
+    '/dashboard/laporan-kendala': <LaporanKendala />,
+    '/dashboard/bot-wa-telegram': <BotWA />,
+    '/dashboard/dokumen': <Dokumen />,
+    '/dashboard/document': <Dokumen />,
   };
 
   if (section) {

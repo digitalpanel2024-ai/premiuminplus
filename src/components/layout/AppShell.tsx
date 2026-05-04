@@ -32,7 +32,7 @@ export function AppShell({ title, subtitle, username, role, sections, onLogout, 
   return (
     <div className="min-h-screen bg-[#07040a] text-white">
       <Sidebar open={open} sections={sections} onClose={() => setOpen(false)} />
-      <div className="lg:pl-[280px] min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col lg:pl-[264px]">
         <Topbar
           title={title}
           subtitle={subtitle}
@@ -41,8 +41,8 @@ export function AppShell({ title, subtitle, username, role, sections, onLogout, 
           onMenuClick={() => setOpen(true)}
           onLogout={onLogout}
         />
-        <main className="flex-1 px-4 py-5 sm:px-6 lg:px-8">
-          <div className="mx-auto w-full max-w-7xl">{children}</div>
+        <main className="flex-1 px-3 py-4 sm:px-4 lg:px-6">
+          <div className="mx-auto w-full max-w-[1400px]">{children}</div>
         </main>
       </div>
     </div>

@@ -56,20 +56,20 @@ export function Topbar({ title, subtitle, username, role, onMenuClick, onLogout 
 
   return (
     <header className="sticky top-0 z-30 border-b border-white/10 bg-[#09060d]/90 backdrop-blur-xl">
-      <div className="flex flex-col gap-4 px-4 py-4 lg:px-8">
+      <div className="flex flex-col gap-3 px-3 py-3.5 lg:px-6">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <button onClick={onMenuClick} className="rounded-2xl border border-white/10 p-2.5 text-white/70 lg:hidden" aria-label="Open menu">
+            <button onClick={onMenuClick} className="rounded-2xl border border-white/10 p-2 text-white/70 lg:hidden" aria-label="Open menu">
               <Menu className="h-5 w-5" />
             </button>
             <div>
-              <h1 className="text-lg font-extrabold tracking-tight sm:text-xl">{title}</h1>
-              <p className="text-xs text-white/45">{subtitle}</p>
+              <h1 className="text-[18px] font-extrabold tracking-tight sm:text-[20px]">{title}</h1>
+              <p className="max-w-2xl text-[11px] leading-5 text-white/45">{subtitle}</p>
             </div>
           </div>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <div className="rounded-2xl border border-brand/20 bg-brand/10 px-4 py-2 text-sm font-semibold text-white">
+            <div className="rounded-2xl border border-brand/20 bg-brand/10 px-3 py-2 text-sm font-semibold text-white">
               {role}
             </div>
 
@@ -122,7 +122,7 @@ export function Topbar({ title, subtitle, username, role, onMenuClick, onLogout 
 
             <button
               onClick={onLogout}
-              className="inline-flex items-center gap-2 rounded-2xl bg-brand px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-brand/20"
+              className="inline-flex items-center gap-2 rounded-2xl bg-brand px-3.5 py-2 text-sm font-semibold text-white shadow-lg shadow-brand/20"
             >
               <LogOut className="h-4 w-4" />
               Logout
@@ -130,7 +130,7 @@ export function Topbar({ title, subtitle, username, role, onMenuClick, onLogout 
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-white/45 lg:hidden">
+        <div className="flex items-center gap-2 text-[11px] text-white/45 lg:hidden">
           <BadgeInfo className="h-4 w-4 text-brand" />
           <span>{username} sedang aktif di {role} mode</span>
         </div>
